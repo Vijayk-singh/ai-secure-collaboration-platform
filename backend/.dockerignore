@@ -1,0 +1,28 @@
+# Ignore Python build artifacts & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+
+# Ignore local environments
+.venv/
+venv/
+ENV/
+env/
+
+# Ignore IDE settings & git
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Ignore Docker assets & environmental secrets
+docker-compose*.yml
+.env
+.env.*

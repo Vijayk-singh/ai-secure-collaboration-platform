@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Secure Collaboration Platform</title>
+    <!-- Modern Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style Guide Link -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- 🌌 DARK BACKGROUND GRADIENT SHIELDS -->
+    <div class="glow-bg">
+        <div class="glow-circle cyan"></div>
+        <div class="glow-circle violet"></div>
+    </div>
+
+    <!-- 🔐 AUTHENTICATION PORTAL (SIGN IN / REGISTER) -->
+    <div id="auth-portal" class="auth-wrapper">
+        <div class="auth-card glass">
+            <div class="auth-header">
+                <h2>Secure Identity Portal</h2>
+                <p>Register or authenticate to join shared workspaces</p>
+            </div>
+            
+            <div class="tab-triggers">
+                <button id="trigger-signin" class="tab-btn active" onclick="switchAuthTab('signin')">Sign In</button>
+                <button id="trigger-signup" class="tab-btn" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="form-signin" onsubmit="handleSignIn(event)">
+                <div class="input-group">
+                    <label for="signin-email">Email Address</label>
+                    <input type="email" id="signin-email" required placeholder="name@example.com">
+                </div>
+                <div class="input-group">
+                    <label for="signin-password">Password</label>
+                    <input type="password" id="signin-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn primary">Authenticate Profile</button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="form-signup" class="hidden" onsubmit="handleSignUp(event)">
+                <div class="input-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required placeholder="Jane Doe">
+                </div>
+                <div class="input-group">
+                    <label for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" required placeholder="name@example.com">
+                </div>
+                <div class="input-group">
+                    <label for="signup-password">Secure Password</label>
+                    <input type="password" id="signup-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn secondary">Establish Identity</button>
+            </form>
+            
+            <div id="auth-feedback" class="feedback-msg"></div>
+        </div>
+    </div>
+
+    <!-- 💻 COLLABORATION DASHBOARD -->
+    <div id="dashboard" class="dashboard-wrapper hidden">
+        
+        <!-- 🧭 PRIMARY HEADER -->
+        <header class="app-header glass">
+            <div class="logo-area">
+                <h1>AI Secure Collaboration</h1>
+                <span id="active-workspace-badge" class="badge">No Workspace Selected</span>
+            </div>
+            <div class="user-meta">
+                <div class="profile-info">
+                    <span id="profile-name">Guest User</span>
+                    <span id="profile-role" class="role-pill">MEMBER</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+            </div>
+        </header>
+
+        <!-- 🎛️ MAIN LAYOUT BODY -->
+        <div class="main-layout">
+            
+            <!-- 📁 SIDEBAR SYSTEM -->
+            <aside class="sidebar glass">
+                <!-- Workspace Controller -->
+                <div class="sidebar-section">
+                    <h3>📁 Workspaces</h3>
+                    <div class="create-bar">
+                        <input type="text" id="new-workspace-name" placeholder="Workspace name...">
+                        <button onclick="createWorkspace()">+</button>
+                    </div>
+                    <ul id="workspace-list" class="list-deck"></ul>
+                </div>
+
+                <!-- Chat Rooms Controller -->
+                <div class="sidebar-section">
+                    <h3>💬 Room Channels</h3>
+                    <div class="create-bar">
+                        <input type="text" id="new-room-name" placeholder="Room name...">
+                        <button onclick="createRoom()">+</button>
+                    </div>
+                    <ul id="room-list" class="list-deck"></ul>
+                </div>
+
+                <!-- Member Roster Controller -->
+                <div class="sidebar-section roster">
+                    <h3>👥 Members & Invite</h3>
+                    <div class="create-bar">
+                        <input type="email" id="invite-email" placeholder="invite@email.com...">
+                        <button onclick="inviteMember()">+</button>
+                    </div>
+                    <ul id="member-roster" class="list-deck"></ul>
+                </div>
+            </aside>
+
+            <!-- 📝 CENTRAL PLAYGROUND -->
+            <main class="content-stage">
+                
+                <!-- 📑 MAIN TAB BAR -->
+                <div class="tab-bar glass">
+                    <button id="tab-notes" class="content-tab-btn active" onclick="switchContentTab('notes')">📝 Notes</button>
+                    <button id="tab-chat" class="content-tab-btn" onclick="switchContentTab('chat')">💬 Chat Deck</button>
+                    <button id="tab-ai" class="content-tab-btn" onclick="switchContentTab('ai')">🤖 AI Command</button>
+                    <button id="tab-jobs" class="content-tab-btn" onclick="switchContentTab('jobs')">⚙️ Queue Console</button>
+                </div>
+
+                <!-- 📓 1. NOTES TAB WORKSPACE -->
+                <section id="panel-notes" class="tab-panel active-panel">
+                    <div class="notes-catalog-split">
+                        
+                        <!-- Left Note list -->
+                        <div class="note-sidebar glass">
+                            <div class="list-header">
+                                <h3>Workspace Catalog</h3>
+                                <button class="action-btn" onclick="openNewNoteForm()">+ New Note</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" id="note-search-input" placeholder="Search title or content..." oninput="loadNotes()">
+                            </div>
+                            <ul id="notes-list" class="list-deck scrollable"></ul>
+                        </div>
+
+                        <!-- Right Note Editor / View -->
+                        <div class="note-editor glass">
+                            <div id="note-view-default" class="editor-placeholder">
+                                <p>Select or create a collaborative markdown note to begin editing</p>
+                            </div>
+
+                            <div id="note-editor-container" class="editor-core hidden">
+                                <input type="hidden" id="current-note-id">
+                                <div class="editor-header">
+                                    <input type="text" id="note-title" placeholder="Document Title..." onchange="saveNote()">
+                                    <div class="editor-actions">
+                                        <button class="action-btn delete" onclick="deleteCurrentNote()">Delete</button>
+                                        <button class="action-btn success" onclick="saveNote()">Save</button>
+                                    </div>
+                                </div>
+                                <div class="tags-input-area">
+                                    <input type="text" id="note-tags" placeholder="Tags (comma-separated, e.g. database, caching)..." onchange="saveNote()">
+                                </div>
+                                <div class="editor-split">
+                                    <textarea id="note-content" placeholder="Type Markdown here..." oninput="updateNotePreview(); triggerAutoSave()"></textarea>
+                                    <div id="note-preview" class="markdown-preview scrollable"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 💬 2. REAL-TIME CHAT DECK -->
+                <section id="panel-chat" class="tab-panel hidden">
+                    <div id="chat-placeholder" class="editor-placeholder glass">
+                        <p>Join a room channel from the sidebar to establish active chat links</p>
+                    </div>
+
+                    <div id="chat-active" class="chat-viewport glass hidden">
+                        <div class="chat-header">
+                            <h3 id="chat-room-title">Lounge</h3>
+                            <button class="action-btn summarizer" onclick="openChatSummaryModal()">AI Summarize</button>
+                        </div>
+                        
+                        <!-- Messages scroll -->
+                        <div id="chat-messages" class="chat-deck-scroll scrollable"></div>
+                        
+                        <!-- Ephemeral Typing ticker -->
+                        <div id="chat-typing-ticker" class="typing-ticker"></div>
+
+                        <!-- Input Area -->
+                        <div class="chat-input-bar">
+                            <input type="text" id="chat-message-input" placeholder="Type a message secure over WS..." oninput="handleTypingIndicator()" onkeydown="handleMessageKeydown(event)">
+                            <button onclick="sendChatMessage()" class="action-btn primary">Send</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 🤖 3. AI COMMAND CENTER -->
+                <section id="panel-ai" class="tab-panel hidden">
+                    <div class="ai-console-split">
+                        
+                        <!-- Semantic Search Panel -->
+                        <div class="ai-card glass">
+                            <h3>🔍 Semantic Vector Search</h3>
+                            <p class="description">Vectorizes queries and scans postgres pgvector embeddings with HNSW cosine indexes.</p>
+                            <div class="ai-action-group">
+                                <input type="text" id="ai-search-query" placeholder="Type natural concepts (e.g. distributed caches)...">
+                                <button onclick="runSemanticSearch()" class="action-btn">Scan</button>
+                            </div>
+                            <div id="ai-search-results" class="ai-results-deck scrollable">
+                                <p class="placeholder-text">Scan results will appear here...</p>
+                            </div>
+                        </div>
+
+                        <!-- RAG QA Completion Panel -->
+                        <div class="ai-card glass">
+                            <h3>🤖 Retrieval-Augmented QA (RAG)</h3>
+                            <p class="description">Context-audits your catalog notes, injects matched vectors, and compiles answers with citations.</p>
+                            <div class="ai-action-group">
+                                <input type="text" id="ai-rag-query" placeholder="Ask questions (e.g. How do we prevent memory leaks?)...">
+                                <button onclick="runRAGQuery()" class="action-btn success">Ask</button>
+                            </div>
+                            <div id="ai-rag-answer-container" class="ai-results-deck scrollable">
+                                <p class="placeholder-text">Ask AI to synthesize workspace notes...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ⚙️ 4. MONITORING QUEUE CONSOLE -->
+                <section id="panel-jobs" class="tab-panel hidden">
+                    <div class="jobs-dashboard">
+                        
+                        <!-- Statistics Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card glass">
+                                <span class="stat-title">Active Queue (Default)</span>
+                                <span id="queue-stat-default" class="stat-value">0</span>
+                                <span class="stat-footer">Direct list pops (`brpop`)</span>
+                            </div>
+                            <div class="stat-card glass">
+                                <span class="stat-title">Delayed Set (Scheduler)</span>
+                                <span id="queue-stat-delayed" class="stat-value">0</span>
+                                <span class="stat-footer">Sorted ETA sets (`zadd`)</span>
+                            </div>
+                            <div class="stat-card glass">
+                                <span class="stat-title">Dead-Letter Queue (DLQ)</span>
+                                <span id="queue-stat-dlq" class="stat-value">0</span>
+                                <span class="stat-footer">Permanent audit logs</span>
+                            </div>
+                        </div>
+
+                        <div class="jobs-actions-area">
+                            <div class="jobs-console-card glass">
+                                <h3>⚙️ Distributed Jobs controller</h3>
+                                <p>Perform diagnostics, trigger failures, and verify backoff schedules.</p>
+                                <div class="jobs-controls">
+                                    <button class="action-btn delete" onclick="triggerSimulatedFailure()">Simulate Failure Task</button>
+                                    <button class="action-btn success" onclick="refreshQueueStats()">Refresh Stats</button>
+                                </div>
+                            </div>
+                            
+                            <div class="jobs-console-card glass">
+                                <h3>📋 Dead-Letter Queue Audit Timeline</h3>
+                                <div id="dlq-timeline" class="dlq-timeline-deck scrollable">
+                                    <p class="placeholder-text">Audit logs are empty...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 📌 CHAT SUMMARY MODAL -->
+    <div id="summary-modal" class="modal-backdrop hidden">
+        <div class="modal-card glass">
+            <div class="modal-header">
+                <h3>🤖 Room Transcript Digest</h3>
+                <button class="close-btn" onclick="closeChatSummaryModal()">×</button>
+            </div>
+            <div id="modal-summary-content" class="modal-body scrollable">
+                <p>Generating summary transcript bullets...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App Logic Link -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
